@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-    test reza
+    test reza new git
     File name: app.py
     Author: Olivia Gélinas
     Course: INF8808
