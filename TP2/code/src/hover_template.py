@@ -6,7 +6,8 @@ from modes import MODES
 
 def get_hover_template(name, mode):
     '''
-    Helloooo
+        Test hasti  check
+        check
         Sets the template for the hover tooltips.
 
         The template contains:
