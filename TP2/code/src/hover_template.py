@@ -18,6 +18,7 @@ def get_hover_template(name, mode):
             * The number of lines spoken by the player, formatted as:
                 - The number of lines if the mode is 'Count ("X lines").
                 - The percent of lines fomatted with two
+                -This a new comment
                     decimal points followed by a '%' symbol
                     if the mode is 'Percent' ("Y% of lines").
 
