@@ -1,4 +1,5 @@
 '''
+    test check
     Contains some functions related to the creation of the bar chart.
     The bar chart displays the data either as counts or as percentages.
 '''
