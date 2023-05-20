@@ -50,7 +50,7 @@ def draw(fig, data, mode):
     
 
     fig = go.Figure(fig)  # conversion back to Graph Object
-    print(data)
+    #print(data)
     # TODO : Update the figure's data according to the selected mode
     if mode == 'Count':
         ymode = 'PlayerLine'
@@ -60,6 +60,7 @@ def draw(fig, data, mode):
     data_temp = [go.Bar(name = Player, x =  'Act ' + (gp['Act']).apply(str), y=gp[ymode], hovertemplate= get_hover_template(Player,mode)) for Player, gp in data.groupby(by='Player')]
     print("data_temp: " , data_temp)
     fig = go.Figure(data_temp)
+    print(fig)
     fig.update_layout(barmode='stack', title='Lines of Players in each Act',xaxis={'categoryorder':'category ascending'})
     #barmode group = create them side to side
     #barmode Stack : create them together
@@ -77,7 +78,7 @@ def update_y_axis(fig, mode):
             The updated figure
             
     '''
-    print(mode)
+    #print(mode)
     if mode == 'Count':        
         fig.update_yaxes(title_text='Lines (Count)')
     else:

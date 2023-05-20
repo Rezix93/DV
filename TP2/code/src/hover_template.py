@@ -19,6 +19,7 @@ def get_hover_template(name, mode):
                 - The number of lines if the mode is 'Count ("X lines").
                 - The percent of lines fomatted with two
                 -This a new comment
+                -New comment from Reza
                     decimal points followed by a '%' symbol
                     if the mode is 'Percent' ("Y% of lines").
 
@@ -29,6 +30,7 @@ def get_hover_template(name, mode):
             The hover template with the elements descibed above
     '''
     # TODO: Generate and return the over template
-    print ("hi")
-
+    #print ("hi")
+    
+    #print("hover test: " ,name,mode)
     return ''

@@ -35,9 +35,9 @@ def summarize_lines(my_df):
 
 
 def add_new_row(group):
-    #new_row = pd.DataFrame({'Group': [group['Group'].iloc[0]], 'Value': [group['Value'].sum()]})
+    #FirstFivePlayerPlay = 
     OtherPlayerLine = group.head(1)["sum"] - group.head(1)["sum_first_fives"]
-    print(OtherPlayerLine,group.head(1)["sum_first_fives"])
+    #print(OtherPlayerLine,group.head(1)["sum_first_fives"])
     OtherPlayerPercent = round(OtherPlayerLine / group.head(1)["sum"] *100,2)
     #new_row = {'Act': group.head(1)["Act"], 'Player': 'OTHER' ,'PlayerLine' :  OtherPlayerLine , 'PlayerPercent' : OtherPlayerPercent}
    
@@ -48,7 +48,7 @@ def add_new_row(group):
     group = pd.concat([group, new_row])
 
     # Drop the 'sum' and 'sum_first five' columns
-    columns_to_drop = ['sum', 'sum_first_fives']
+    columns_to_drop = ['sum', 'sum_first_fives','AllLines']
     group = group.drop(columns=columns_to_drop)
     #print("add new row", group)
     
@@ -81,15 +81,16 @@ def replace_others(my_df):
     '''
     # TODO : Replace players in each act not in the top 5 by a
     # new player 'OTHER' which sums their line count and percentage
-    #print('replace_others' , my_df)
-    first_fives_player_each_Act = my_df.groupby('Act').head(5)
-    first_fives_player_each_Act['sum_first_fives'] = first_fives_player_each_Act.groupby('Act')['PlayerLine'].transform('sum')
 
-    first_fives_player_each_Act = first_fives_player_each_Act.groupby('Act').apply(add_new_row).reset_index(drop=True)
-    #print(x)
-    #first_fives_player_each_Act = pd.concat([first_fives_player_each_Act,x])
+    topfivePlayersAlllines = my_df.groupby('Player')['PlayerLine'].sum().reset_index().rename(columns={'PlayerLine': 'AllLines'}).sort_values(by='AllLines', ascending=False).head(5)
+    mergedData = pd.merge(my_df, topfivePlayersAlllines, on='Player')
+    mergedData = mergedData.sort_values(by='Act')
+    
+    mergedData['sum_first_fives'] = mergedData.groupby('Act')['PlayerLine'].transform('sum')
 
-    return first_fives_player_each_Act
+    FinalData = mergedData.groupby('Act').apply(add_new_row).reset_index(drop=True)  
+
+    return FinalData
 
 
 def clean_names(my_df):
@@ -101,6 +102,5 @@ def clean_names(my_df):
             The df with formatted names
     '''
     # TODO : Clean the player names
-    my_df['Player'].str.capitalize()
-    #print (my_df)
+    my_df['Player'] = my_df['Player'].str.capitalize()
     return my_df
