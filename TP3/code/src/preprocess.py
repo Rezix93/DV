@@ -14,6 +14,9 @@ def convert_dates(dataframe):
             The processed dataframe with datetime-formatted dates.
     '''
     # TODO : Convert dates
+    # using function "to_datetime" to convert dataframe to datetime
+    dataframe = pd.read_csv(('./assets/data/arbres.csv'))
+    dataframe['Date_Plantation'] = pd.to_datetime(dataframe['Date_Plantation'])
     return dataframe
 
 
@@ -30,6 +33,12 @@ def filter_years(dataframe, start, end):
             The dataframe filtered by date.
     '''
     # TODO : Filter by dates
+#   df = dataframe.groupby('Date_Plantation')
+#   print(df)
+#  return dataframe
+# using .loc accessor and a boolean proposition to filter all values between 01/01 untill 12/31 per each year
+    dataframe = dataframe.loc[(dataframe['Date_Plantation'] >= ('%d-01-01' % start))
+                              & (dataframe['Date_Plantation'] <= ('%d-12-31' % end))]
     return dataframe
 
 
@@ -47,7 +56,20 @@ def summarize_yearly_counts(dataframe):
             trees for each neighborhood each year.
     '''
     # TODO : Summarize df
-    return None
+    # firstly,  we group the dataframe by the values in the columns 'Arrond_Nom' and dataframe['Date_Plantation'].dt.year. 
+    # so we will have data grouped by the unique combinations of the neighborhood.
+    # then with the function '.size()', we calculate the count of each group,
+    # representing the number of data within each grouped combination of neighborhood and year
+    # finally, ".reset_index(name='Counts')" converts the result grouped into a dataframe and resets the index. 
+    # The column containing the counts is named 'Counts'.
+    #So we have a data frame that includes the counts of observations for 
+    # each combination of neighborhood and year in the original dataframe, providing statistics 
+    # of the frequency of tree plantations in different neighborhoods and years.
+    
+    yearly_df = (dataframe.groupby(['Arrond_Nom',dataframe['Date_Plantation'].dt.year]).size().reset_index(name='Counts'))
+
+    return yearly_df
+
 
 
 def restructure_df(yearly_df):
@@ -69,7 +91,23 @@ def restructure_df(yearly_df):
             The restructured dataframe
     '''
     # TODO : Restructure df and fill empty cells with 0
-    return None
+    
+    #creating pivot table from our dataframe: [neighborhoods as rows, years as columns, and the counts of tree plantations as the cell values.]
+    
+    data = yearly_df.pivot(index='Arrond_Nom', columns='Date_Plantation', values='Counts')
+    
+    
+    #fill the empty cells with zero
+    
+    data = data.fillna(0)
+    
+    # rename years columns to be more easily to show
+    
+    data = data.rename({2010: '2010-12-31', 2011: '2011-12-31', 2012: '2012-12-31', 
+                        2013: '2013-12-31', 2014: '2014-12-31', 2015: '2015-12-31', 
+                        2016: '2016-12-31', 2017: '2017-12-31', 2018: '2018-12-31', 
+                        2019: '2019-12-31', 2020: '2020-12-31'}, axis=1)
+    return data
 
 
 def get_daily_info(dataframe, arrond, year):
