@@ -16,7 +16,9 @@ def convert_dates(dataframe):
     # TODO : Convert dates
     # using function "to_datetime" to convert dataframe to datetime
     dataframe = pd.read_csv(('./assets/data/arbres.csv'))
+    print(dataframe)
     dataframe['Date_Plantation'] = pd.to_datetime(dataframe['Date_Plantation'])
+    print("print from convets dates:" , dataframe)
     return dataframe
 
 
